@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Из того, что есть</string>
+    <string name="title_activity_main">Из того, что есть</string>
+    <string name="package_name">de.schneiderstudios.iztogo</string>
+    <string name="custom_url_scheme">de.schneiderstudios.iztogo</string>
+</resources>

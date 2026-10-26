@@ -1,0 +1,10 @@
+{
+  "appId": "de.schneiderstudios.iztogo",
+  "appName": "Из того, что есть",
+  "webDir": "www",
+  "android": { "backgroundColor": "#f7f9f6" },
+  "ios": { "backgroundColor": "#f7f9f6", "contentInset": "never" },
+  "plugins": {
+    "LocalNotifications": { "iconColor": "#2b6f48" }
+  }
+}
