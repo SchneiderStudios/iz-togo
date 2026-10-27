@@ -1,8 +1,7 @@
 name: Android APK
 
+# Сборка Android только вручную: Actions → Android APK → Run workflow
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

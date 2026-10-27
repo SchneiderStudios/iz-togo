@@ -13,25 +13,33 @@
 | `www/config.js` | Адрес сервера для ИИ (вписать после деплоя на Vercel) |
 | `android/`, `ios/` | Готовые проекты для Android Studio и Xcode |
 | `api/ai.js` | Сервер для ИИ (фото холодильника и чека, «придумать блюдо», свой рецепт). Ключ Anthropic хранится только тут |
-| `.github/workflows/android.yml` | Автосборка APK на GitHub при каждом обновлении |
+| `.github/workflows/android.yml` | Сборка APK для Android по кнопке (Actions → Run workflow) |
 | `build_www.py` | Пересобирает `www/index.html` из исходной страницы |
 
-## 1. Android: APK за 10 минут, без своего компьютера
-1. Создать пустой репозиторий на GitHub (например, `SchneiderStudios/iz-togo`) и загрузить в него эту папку.
-2. GitHub сам соберёт APK: вкладка **Actions → Android APK → последний запуск → Artifacts**.
-3. Скачать `app-debug.apk` на Android-телефон и установить (разрешить установку из этого источника).
+## 1. iPhone бесплатно: веб-версия на экране «Домой»
+1. Зайти на vercel.com → **Sign up with GitHub** → **Add New → Project** → выбрать `iz-togo` → **Deploy** (настройки не трогать).
+2. Через минуту будет адрес вида `https://iz-togo.vercel.app`.
+3. На iPhone открыть его в **Safari** → «Поделиться» → **«На экран Домой»**. Приложение откроется на весь экран, без адресной строки, и будет работать без интернета.
+4. Для ИИ (фото холодильника и чека, «придумать блюдо») — добавить ключ, см. раздел 3.
+
+Что на iPhone в веб-версии не работает: напоминания о сроках по расписанию и вибрация. Это появится в версии для App Store.
+
+## 2. Android (по желанию): APK
+1. Репозиторий уже есть: `SchneiderStudios/iz-togo`.
+2. Запустить сборку вручную: **Actions → Android APK → Run workflow**. Готовый `iz-togo.apk` появится в **Releases**.
+3. Скачать `iz-togo.apk` на Android-телефон и установить (разрешить установку из этого источника).
 
 Для Google Play: аккаунт разработчика (разовый взнос 25 $). Новым личным аккаунтам Google требует
 закрытый тест: 12 тестировщиков в течение 14 дней — это и есть наша проверка спроса.
 
-## 2. ИИ и веб-версия: Vercel
+## 3. ИИ: ключ на Vercel
 1. На vercel.com: **Add New → Project → импорт репозитория**. Настройки сборки не нужны (`vercel.json` уже есть).
 2. **Settings → Environment Variables**: `ANTHROPIC_API_KEY` = ваш ключ (console.anthropic.com).
    Необязательно: `AI_MODEL`, `DAILY_LIMIT` (по умолчанию 40 запросов на устройство в день).
 3. Веб-версия откроется по адресу вида `https://iz-togo.vercel.app`. На iPhone: Safari → «Поделиться» → «На экран Домой».
 4. Вписать этот адрес в `www/config.js` → `API_BASE`, тогда ИИ заработает и в приложении на телефоне.
 
-## 3. iPhone в App Store
+## 4. iPhone в App Store (позже)
 Нужны Mac с Xcode и Apple Developer Program (99 $ в год).
 `npm install && npx cap sync ios && npx cap open ios` → в Xcode выбрать команду и нажать Run / Archive → TestFlight.
 Чтобы Apple не отклонила приложение как «просто сайт» (правило 4.2), в нём уже есть:

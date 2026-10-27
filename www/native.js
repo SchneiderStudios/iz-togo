@@ -58,4 +58,25 @@
   if (!NATIVE && "serviceWorker" in navigator && location.protocol === "https:") {
     window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
   }
+
+  // iPhone: подсказка «Установить на экран Домой» (только в Safari и пока не установлено)
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+  let hidden = false; try { hidden = localStorage.getItem("ichto2:iosHint") === "no"; } catch (e) {}
+  N.installHint = !NATIVE && isIOS && !standalone && !hidden;
+  if (N.installHint) {
+    window.addEventListener("load", () => {
+      const st = document.createElement("style");
+      st.textContent = `.ios-hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:20;width:min(488px,calc(100% - 24px));background:var(--ink);color:var(--app);border-radius:16px;padding:14px 44px 14px 16px;font-size:14px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.ios-hint b{display:block;font-size:15px;margin-bottom:2px}.ios-hint .sh{display:inline-block;vertical-align:-3px;width:16px;height:18px}
+.ios-hint button{position:absolute;top:8px;right:8px;border:0;background:transparent;color:inherit;font-size:20px;width:32px;height:32px;line-height:1}`;
+      document.head.appendChild(st);
+      const d = document.createElement("div");
+      d.className = "ios-hint"; d.setAttribute("role", "note");
+      d.innerHTML = '<b>Установите как приложение</b>Нажмите <svg class="sh" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 11V1M4.5 4.5 8 1l3.5 3.5M3 7.5H2v9h12v-9h-1"/></svg> «Поделиться» внизу Safari, затем «На экран Домой». Иконка появится рядом с другими приложениями.<button aria-label="Скрыть">×</button>';
+      d.querySelector("button").onclick = () => { d.remove(); try { localStorage.setItem("ichto2:iosHint", "no"); } catch (e) {} };
+      document.body.appendChild(d);
+    });
+  }
 })();
